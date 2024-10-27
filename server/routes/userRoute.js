@@ -1,17 +1,22 @@
 const express= require('express');
 const router= express.Router();
-const User= require('../config/models/userModel');
+const User= require('../models/userModel');
 const bcrypt= require('bcryptjs');
+const jwt= require('jsonwebtoken');
+const authMiddleware= require('../middlewares/authMiddleware');
 
 //register user
 router.post('/register', async (req, res) => {
     try{
+        console.log("in userRoute")
         const user = await User.findOne({email : req.body.email});
         if(user){
-            res.send({
+            console.log("User already exists")
+            return res.send({
                 success: false,
                 message: "User already exists"
             })
+            
         }
         // hashing the password
         const salt= await bcrypt.genSalt(10);
@@ -22,15 +27,17 @@ router.post('/register', async (req, res) => {
         // const newUser= new User(req.body);
         // newUser.password= hashedPassword;
         // await newUser.save();
-
-
-
         const newUser= new User({
             name: req.body.name,
             email: req.body.email,
             password: hashedPassword,
             phone: req.body.phone
         });
+        await newUser.save();
+        return res.send({
+            success: true,
+            message: "User created successfully"
+        })
     }   
     catch(e){
         res.send({
@@ -43,12 +50,12 @@ router.post('/register', async (req, res) => {
 );
 
 //login user
-router.post('login', async (req,res)=>{
+router.post('/login', async (req,res)=>{
     try{
         const getUser= await User.findOne({email: req
             .body.email});
            if(!getUser){
-                res.send({
+             return   res.send({
                      success: false,
                      message: "User not found"
                 })
@@ -56,7 +63,7 @@ router.post('login', async (req,res)=>{
               //checking if password is correct
                 const validPassword= await bcrypt.compare(req.body.password, getUser.password);
                 if(!validPassword){
-                    res.send({
+                   return res.send({
                         success: false,
                         message: "Invalid password"
                     })
@@ -64,11 +71,16 @@ router.post('login', async (req,res)=>{
 
                 //create and assign a token
                 const token= jwt.sign({userId: getUser._id}, process.env.jwt_secret, {expiresIn: '1d'});
+                
+                return res.send(
+                    {
+                        success: true,
+                        message: "Login successful",
+                        data: token
+                    }
+                )
 
-                res.send({
-                    success: true,
-                    message: "Login successful"
-                })
+                
 
                 
     }
@@ -79,5 +91,53 @@ router.post('login', async (req,res)=>{
         })
     }
 })
+
+
+// users
+
+router.get('/patrons',async (req,res)=>{
+    try
+    {
+        const user = await User.find({role: 'patron'});
+
+        res.send({
+            success: true,
+            data: user
+        })
+    }
+    catch(e){
+        res.send({
+            success: false,
+            message: e.message
+        })
+    }
+})
+
+
+router.get('/getUserDetails',authMiddleware, async(req,res)=>{
+    try{
+       const user= await User.findById(req.body.userIdFromToken); 
+        if(!user){
+            return res.send({
+                success: false,
+                message: "User not found"
+            })
+        }
+        return res.send({
+            success: true,
+            message: "User details fetched successfully",
+            data: user
+        })
+       
+    }
+    catch(e){
+        res.send({
+            success: false,
+            message: e.message
+        })
+    }
+})
+
+    
 
 module.exports= router;

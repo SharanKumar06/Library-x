@@ -2,8 +2,9 @@ import React from 'react'
 
 function Button1( {title,
     variant= "contained",
-    color= "primary", type = "button", onClick}) {
-        let className= "w-100 pt-1 pb-1 ";
+    color= "primary", type = "button", onClick, fullWidth = false}) {
+       
+        let className= "pt-1 pb-1 rounded pointer ";
           if(variant === "contained") {
             className+= "bg-" + color + " text-white";
           }
@@ -11,7 +12,7 @@ function Button1( {title,
             className+= "border-" + color + " text-" + color;
           }
         
-        
+        (fullWidth)? (className+= " w-100 "): (className+=  " pr-2 pl-2 ");
           return (
             <button className={className} type={type}  onClick={onClick}>{title}</button>
           )

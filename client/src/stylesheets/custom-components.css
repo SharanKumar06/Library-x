@@ -5,11 +5,44 @@
     font-weight: bold;
 }
 .underline{
-    text-decoration: underline;
+    text-decoration: underline;;
+    
 }
-
+.pointer{
+    cursor: pointer;
+}
 a:hover{
     cursor: pointer;
     color: var(--color-primary);
     text-decoration: underline;
 }
+.rounded{
+    border-radius: 4px;
+}
+.loader-parent{
+    position: fixed;
+    inset:0;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.loader{
+    height: 50px;
+    width: 50px;
+    border: 5px solid rgb(228, 219, 219);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: loader-animation 1s infinite linear;
+}
+
+
+@keyframes loader-animation{
+    to{
+        transform: rotate(360deg);
+    }
+}
+

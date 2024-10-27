@@ -27,12 +27,12 @@ const userSchema = new mongoose.Schema({
     },
     role:{
         type: String,
-        required: true,
         default: 'patron'
     },
     status:{
         type: String,
-        required: true,
         default: 'active'
     }
 })
+
+module.exports = mongoose.model('User', userSchema);
