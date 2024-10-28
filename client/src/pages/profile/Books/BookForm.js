@@ -3,20 +3,37 @@ import React from 'react'
 import Button1 from '../../../components/Button1'
 import { useDispatch, useSelector } from 'react-redux'
 import { showLoader, hideLoader } from '../../../Redux/loaderslice'
-import { addBook } from '../../../APIs/Books'
+import { addBook, updateBook } from '../../../APIs/Books'
 
 
 
-function BookForm({open, setOpen}) {
+function BookForm({open, setOpen, reloadBooks, selectedBook, formType}) {
     const {user}= useSelector(state=> state.users);
     const dispatch= useDispatch();
+
    const onFinish= async (values)=>{
          try {
             dispatch(showLoader());
             values.createdBy= user._id;
+            if(formType === 'edit'){
+                values._id= selectedBook._id;
+                const res= await updateBook(values);
+                if(res.success){
+                    message.success(res.message);
+                    reloadBooks();
+                    dispatch(hideLoader());
+                    return setOpen(false);
+                }
+                else{
+                    dispatch(hideLoader());
+                    message.error(res.message);
+                    return setOpen(false);
+                }
+            }
             const res= await addBook(values);
             if(res.success){
                 message.success(res.message);
+                reloadBooks();
             }
             else{
                 message.error(res.message);
@@ -43,6 +60,11 @@ function BookForm({open, setOpen}) {
     <Form
         layout= "vertical"
         onFinish= {onFinish}
+        initialValues={{
+            ...selectedBook,
+            publishedDate: selectedBook?.publishedDate ? new Date(selectedBook.publishedDate).toISOString().split('T')[0] : null
+        }}
+        
     >
         <Row gutter={[20,20]}>
             <Col span={24}>
@@ -101,14 +123,15 @@ function BookForm({open, setOpen}) {
                     rules={[{ required: true, message: 'Please input the category of book!' }]}
                 >
                     <select name="" id="">
+                        <option value="">categories</option>
                         <option value="fiction">Fiction</option>
                         <option value="non-fiction">Non-Fiction</option>
                         <option value="biography">Biography</option>
                         <option value="self-help">Self-Help</option>
-                        <option value="drama">Other</option>
-                        <option value="poetry">Other</option>
-                        <option value="history">Other</option>
-                        <option value="mythology">Other</option>
+                        <option value="drama">Drama</option>
+                        <option value="poetry">Poetry</option>
+                        <option value="history">History</option>
+                        <option value="mythology">mythology</option>
 
                     </select>
                 </Form.Item>

@@ -94,24 +94,32 @@ router.post('/login', async (req,res)=>{
 
 
 // users
-
-router.get('/patrons',async (req,res)=>{
-    try
-    {
-        const user = await User.find({role: 'patron'});
-
-        res.send({
+router.get('/getAllUsers/:role',authMiddleware, async(req,res)=>{
+    try{
+        const users= await User.find({role: req.params.role});
+        if(!users){
+            console.log("No users found")
+            return res.send({
+                success: false,
+                message: "No users found"
+            })
+        }
+        
+        return res.send({
             success: true,
-            data: user
+            message: "Users fetched successfully",
+            data: users
         })
     }
     catch(e){
+        console.log(e);
         res.send({
             success: false,
             message: e.message
         })
     }
 })
+
 
 
 router.get('/getUserDetails',authMiddleware, async(req,res)=>{

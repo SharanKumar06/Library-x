@@ -5,6 +5,10 @@ const bookSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    author:{
+        type: String,
+        required: true
+    },
     description: {
         type: String,
         required: true,
@@ -35,7 +39,8 @@ const bookSchema = new mongoose.Schema({
     },
     availableCopies: {
         type: Number,
-        required: true,
+        default: 0,
+        // required: true,
     },
     createdBy:{
         type: String,
@@ -49,4 +54,5 @@ const bookSchema = new mongoose.Schema({
     }
 );
 
-const Book = mongoose.model('Book', bookSchema);
+
+module.exports = mongoose.model('Book', bookSchema);

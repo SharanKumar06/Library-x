@@ -38,6 +38,14 @@ a:hover{
     border-radius: 50%;
     animation: loader-animation 1s infinite linear;
 }
+table{
+    border: 1px solid #cdcdcd;
+    
+}
+i{
+    font-size: 15px;
+    cursor: pointer;
+}
 
 
 @keyframes loader-animation{

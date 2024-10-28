@@ -6,6 +6,7 @@ const authMiddleware = require('../middlewares/authMiddleware');
 router.post('/addBook', authMiddleware, async (req, res) => {
     try{
         const newbook= new Book(req.body);
+        newbook.availableCopies= newbook.totalCopies;
         await newbook.save();
         return res.send({
             success: true,
@@ -13,6 +14,7 @@ router.post('/addBook', authMiddleware, async (req, res) => {
         });
     }
     catch(e){
+        console.log(e);
         res.status(500).send({
             success: false,
             message: e.message
@@ -23,9 +25,9 @@ router.post('/addBook', authMiddleware, async (req, res) => {
 
 //update a book
 
-router.put('/update-book/:id', authMiddleware, async (req, res) => {
-    try{
-        await Book.findByIdAndUpdate(req.params.id, req.body);
+router.put('/update-book', authMiddleware, async (req, res) => {
+    try{ 
+        await Book.findByIdAndUpdate(req.body._id, req.body);
         return res.send({
             success: true,
             message: 'Book updated successfully'
@@ -57,7 +59,7 @@ router.delete('/delete-book/:id', authMiddleware, async (req, res) => {
 
 //get-all-books
 
-router.get('/get-all-books', authMiddleware, async (req, res) => {
+router.get('/getAllBooks', authMiddleware, async (req, res) => {
 
     try {
         const books = await Book.find();

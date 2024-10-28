@@ -57,7 +57,7 @@ function ProtectedRoute({children}) {
         <div className='p-2 '>
           <div className="header p-3 bg-primary flex rounded justify-between items-center">
             <h1 className="text-2xl text-white font-bold pointer" onClick={()=>Navigate('/')}>LIBRARY-X</h1>
-            <div class="flex items-center bg-white text-primary font-bold">
+            <div className="flex items-center bg-white text-primary font-bold">
             <div className="flex items-center gap-1 p-1">
               <FaUserAstronaut/>
               <span onClick={()=> Navigate('/profile')} className="text-sm underline pointer">{user.name.toUpperCase()}</span>
@@ -68,7 +68,7 @@ function ProtectedRoute({children}) {
             </div>
             </div> 
           </div>
-          <div class="content mt-1">{children}</div>
+          <div className="content mt-1">{children}</div>
          
         </div>
         </>

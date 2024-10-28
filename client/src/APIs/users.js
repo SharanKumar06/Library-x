@@ -39,3 +39,14 @@ export const getUserDetails= async()=>{
       throw (e);
   }
 }
+
+export const getAllUsers= async(role)=>{
+  try{
+      console.log("in getAllUsers");
+      const response= await axiosInstance.get(`/api/users/getAllUsers/${role}`);
+      return response.data;
+  }
+  catch(e){
+      throw (e);
+  }
+}
