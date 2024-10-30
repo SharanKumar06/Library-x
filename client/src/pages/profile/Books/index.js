@@ -1,17 +1,21 @@
 import React, { useState } from 'react'
 import Button1 from '../../../components/Button1'
 import BookForm from './BookForm';
+import IssueForm from './IssueForm';
 import { useDispatch } from 'react-redux';
 import { hideLoader, showLoader } from '../../../Redux/loaderslice';
 import { deleteBook, getAllBooks } from '../../../APIs/Books';
 import { message, Table } from 'antd';
 import 'remixicon/fonts/remixicon.css';
 import { AiFillDelete, AiFillEdit } from "react-icons/ai";
+import Issues from './Issues';
 
 function Books() {
   const [formType, setFormType]= useState('add');
   const [selectedBook, setSelectedBook]= useState(null);
   const [openBookForm , setOpenBookForm]= React.useState(false);
+  const [openIssues, setOpenIssues]= React.useState(false);
+  const [openIssuesForm, setOpenIssuesForm]= React.useState(false);
   const [books, setBooks]= React.useState([]);
   const dispatch= useDispatch();
 
@@ -103,6 +107,20 @@ function Books() {
           <AiFillDelete 
             onClick={()=>{DeleteBook(record._id)}}
           />
+          <span className='underline pointer' onClick={()=>{
+            setOpenIssues(true);
+            setSelectedBook(record)
+            }}>
+            Issues
+          </span>
+          
+          <span className='underline pointer' onClick={()=>{
+            setOpenIssuesForm(true);
+            setSelectedBook(record)
+            }}>
+            Issue Book
+          </span>
+
         </div>
       )
     },
@@ -122,8 +140,10 @@ function Books() {
         <Table columns= {columns} dataSource= {books} className='mt-1'></Table>
         
       {openBookForm && <BookForm open={openBookForm} setOpen={setOpenBookForm} formType= {formType} selectedBook= {selectedBook} reloadBooks= {getallbooks}  />}
-
+      {openIssues&& <Issues open={openIssues} setOpen={setOpenIssues}  selectedBook= {selectedBook}   />}
+      {openIssuesForm && <IssueForm open={openIssuesForm} setOpen={setOpenIssuesForm} selectedBook= {selectedBook} />}
     </div>
+
   )
 }
 
