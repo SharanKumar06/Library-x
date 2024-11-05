@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const issueSchema = new mongoose.Scheme({
+const issueSchema = new mongoose.Schema({
     book : {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Book',
@@ -27,7 +27,7 @@ const issueSchema = new mongoose.Scheme({
     returnedDate: {
         type: Date,
     },
-    rentPerDay: {
+    rent: {
         type: Number,
         required: true
     },

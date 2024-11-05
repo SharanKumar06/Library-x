@@ -5,10 +5,13 @@ import {  getAllUsers} from '../../../APIs/users';
 import { message, Table } from 'antd';
 import Button1 from '../../../components/Button1';
 import moment from 'moment';
+import IssuedBooks from './issuedBooks';
 
 
 function Users({role}) {
     const [users, setUsers]= React.useState([]);
+    const [open, setOpen]= React.useState(false);
+    const [selectedUser, setSelectedUser]= React.useState(null);
     const dispatch= useDispatch();
     const GetUsers= async ()=>{
         try {
@@ -64,7 +67,7 @@ function Users({role}) {
             dataIndex: 'actions',
             render: (actions, record)=>(
                 <div>
-                    <Button1 variant='outlined' title='books' />
+                    <Button1 variant='outlined' title='books' onClick={()=>{setOpen(true); setSelectedUser(record)}} />
                 </div>
             )
 
@@ -74,7 +77,7 @@ function Users({role}) {
   return (
     <div>
         <Table columns={columns} dataSource={users}></Table>
-
+        {open && <IssuedBooks open={open} setOpen={setOpen} selectedUser={selectedUser}/>}
     </div>
   )
 }

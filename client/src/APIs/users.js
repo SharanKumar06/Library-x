@@ -50,3 +50,23 @@ export const getAllUsers= async(role)=>{
       throw (e);
   }
 }
+
+export const getUserById= async(id)=>{
+  try{
+      console.log("in getUserById");
+      const response= await axiosInstance.get(`/api/users/getUserById/${id}`);
+      
+      if(!response.data.success){
+          response.data.message= "User not found";
+          return response.data
+      }
+      console.log(response.data);
+      return response.data;
+  }
+  catch(e){
+    return {
+        success: false,
+        message: e.message
+    }
+  }
+}

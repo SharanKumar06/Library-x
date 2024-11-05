@@ -2,12 +2,13 @@ import React from 'react'
 
 function Button1( {title,
     variant= "contained",
-    color= "primary", type = "button", onClick, fullWidth = false}) {
+    color= "primary", type = "button", onClick, fullWidth = false, disabled = false}) {
        
         let className= "pt-1 pb-1 rounded pointer ";
           if(variant === "contained") {
             className+= "bg-" + color + " text-white";
           }
+          if(disabled) className+=" disabled"
           else if(variant === "outlined") {
             className+= "border-" + color + " text-" + color;
           }

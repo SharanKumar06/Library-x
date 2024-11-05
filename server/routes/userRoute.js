@@ -146,6 +146,32 @@ router.get('/getUserDetails',authMiddleware, async(req,res)=>{
     }
 })
 
+router.get('/getUserById/:id',authMiddleware, async(req,res)=>{
+    try{
+        const user= await User.findById(req.params.id);
+        if(!user){
+            console.log("User not found")
+            return res.send({
+                success: false,
+                message: "User not found"
+            })
+        }
+        return res.send({
+            success: true,
+            message: "User fetched successfully",
+            data: user
+        })
+    }
+    catch(e){
+        console.log(e)
+        res.send({
+            success: false,
+            message: e.message
+        })
+    }
+}
+)
+
     
 
 module.exports= router;

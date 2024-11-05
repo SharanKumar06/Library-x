@@ -4,7 +4,7 @@ input,textarea, select{
     height: 40px;
     padding-left: 10px;
     font-size: 14px;
-    
+    border: 1px solid #7a6a6a;
 }
 
 textarea{
@@ -19,6 +19,7 @@ input:focus, textarea:focus, select:focus{
 
 button{
     height: 40px;
+    border-width: 1px;
 }
 
 .ant-form-item{
